@@ -13,3 +13,6 @@ docs/
 # Dotenv file
 .env
 .wake/*
+zkout/*
+anvil-zksync.log
+foundryup-zksync

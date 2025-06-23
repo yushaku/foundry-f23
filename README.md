@@ -1,13 +1,11 @@
 ## Foundry
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
-
 Foundry consists of:
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
+- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
+- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
+- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
 
 ## Documentation
 
@@ -15,52 +13,48 @@ https://book.getfoundry.sh/
 
 ## Usage
 
-### Build
-
 ```shell
 $ forge build
-```
-
-### Test
-
-```shell
 $ forge test
+$ forge fmt        # format
+$ forge snapshot   # Gas Snapshots
 ```
 
-### Format
+## install dependency packages
 
-```shell
-$ forge fmt
+```sh
+forge install smartcontractkit/chainlink-brownie-contracts@0.6.1
 ```
 
-### Gas Snapshots
+## store private key in keystore
 
-```shell
-$ forge snapshot
+Encrypting your Keys Using ERC2335
+
+```sh
+cast wallet import nameOfAccountGoesHere --interactive
+
+# output: `nameOfAccountGoesHere` keystore was saved successfully.
+#          Address: 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
 ```
 
-### Anvil
+Ideally, you don't do this in your VS Code.
 
-```shell
-$ anvil
+You will be asked for your `private key` and a `password` to secure it. You will do this only once, which is amazing!
+
+```sh
+forge script script/DeploySimpleStorage.s.sol \
+--rpc-url $RPC_URL \
+--broadcast \
+--account nameOfAccountGoesHere \
+--sender 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
 ```
 
-### Deploy
+You will be asked for your `password`. You won't be able to deploy without your password.
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
+To see all the configured wallets you can call the following: `cast wallet list`.
 
-### Cast
+Clear your history so your private key won't randomly remain there using the following command: `history -c`.
 
-```shell
-$ cast <subcommand>
-```
+**_Stay safe! Stay froggy! Don't lose your keys. If you are seeing your private key in plain text, you are doing something wrong._**
 
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+## Interacting With Contract Addresses via Command Line
