@@ -53,3 +53,7 @@ Ran 1 test suite in 2.89s (1.91s CPU time): 3 tests passed, 0 failed, 0 skipped 
 ```
 
 These are rookie numbers! Maybe 100% is not feasible, but 13% is as good as nothing. In the next lessons, we will up our game and increase these numbers!
+
+## cheat codes to support tets
+
+https://getfoundry.sh/reference/cheatcodes/overview

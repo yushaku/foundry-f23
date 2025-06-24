@@ -24,6 +24,7 @@ $ forge snapshot   # Gas Snapshots
 
 ```sh
 forge install smartcontractkit/chainlink-brownie-contracts@0.6.1
+forge install Cyfrin/foundry-devops
 ```
 
 ## store private key in keystore
@@ -58,3 +59,34 @@ Clear your history so your private key won't randomly remain there using the fol
 **_Stay safe! Stay froggy! Don't lose your keys. If you are seeing your private key in plain text, you are doing something wrong._**
 
 ## Interacting With Contract Addresses via Command Line
+
+cast
+
+## [Chisel](https://getfoundry.sh/chisel/overview#chisel)
+
+Chisel is a fast, utilitarian, and verbose Solidity REPL.
+
+From here, start writing Solidity code! Chisel will offer verbose feedback on each input.
+
+Create a variable a and query it:
+
+```sh
+➜ uint256 a = 123;
+➜ a
+Type: uint256
+├ Hex: 0x7b
+├ Hex (full word): 0x000000000000000000000000000000000000000000000000000000000000007b
+└ Decimal: 123
+```
+
+## check gas
+
+```sh
+forge snapshot
+```
+
+## check smart contract storage layout
+
+```sh
+forge inspect FundMe storageLayout
+```
