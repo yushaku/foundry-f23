@@ -6,6 +6,14 @@ out = "out"
 libs = ["lib"]
 ffi = false          # allow foundry run sh scripts on the host machine, should be false for all time but for integration which use devops, it's true
 remappings = [
-  '@chainlink/contracts=lib/chainlink-brownie-contracts/contracts'
+  '@chainlink/contracts=lib/chainlink-brownie-contracts/contracts',
+  '@foundry-devops=lib/foundry-devops/src/',
+  '@solmate=lib/solmate/src/',
 ]
 
+[etherscan]
+mainnet = { key = "${ETHERSCAN_API_KEY}" }
+sepolia = {key = "${ETHERSCAN_API_KEY}"}
+
+[rpc_endpoints]
+sepolia = "${SEPOLIA_RPC_URL}"

@@ -90,3 +90,50 @@ forge snapshot
 ```sh
 forge inspect FundMe storageLayout
 ```
+
+## contract layout
+
+// version
+// imports
+// errors
+// interfaces, libraries, contracts
+// Type declarations
+// State variables
+// Events
+// Modifiers
+// Functions
+
+// Layout of Functions:
+// constructor
+// receive function (if exists)
+// fallback function (if exists)
+// external
+// public
+// internal
+// private
+// view & pure functions
+
+## The Checks-Effects-Interactions (CEI) Pattern
+
+The Checks-Effects-Interactions pattern is a `crucial best practice` in `Solidity` development aimed at `enhancing the security` of smart contracts, especially against **`reentrancy attacks`**.
+
+- **Checks**: `Validate inputs` and `conditions` to ensure the function can execute safely. This includes checking permissions, input validity, and contract state prerequisites.
+
+- **Effects**: Modify the state of `our contract` based on the validated inputs. This phase ensures that all internal state changes occur before any external interactions.
+
+- **Interactions**: Perform external calls to other contracts or accounts. This is the last step to prevent reentrancy attacks, where an external call could potentially call back into the original function before it completes, leading to unexpected behavior.
+
+```solidity
+function coolFunction() public {
+    // Checks
+    checkX();
+    checkY();
+
+    // Effects
+    updateStateM();
+
+    // Interactions
+    sendA();
+    callB();
+}
+```
