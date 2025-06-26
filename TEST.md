@@ -57,3 +57,9 @@ These are rookie numbers! Maybe 100% is not feasible, but 13% is as good as noth
 ## cheat codes to support tets
 
 https://getfoundry.sh/reference/cheatcodes/overview
+
+## fuzz testing
+
+Generally, fuzz testing is an automated software testing technique that involves injecting invalid, malformed, or unexpected inputs into a system to identify software defects and vulnerabilities.
+
+This method helps in revealing issues that may lead to crashes, security breaches, or performance problems. Fuzz testing operates by feeding a program with large volumes of random data (referred to as "fuzz") to observe how the system handles such inputs. If the system crashes or exhibits abnormal behavior, it indicates a potential vulnerability or defect that needs to be addressed.

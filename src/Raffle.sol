@@ -5,7 +5,6 @@ import {VRFV2PlusClient} from "@chainlink/contracts/src/v0.8/vrf/dev/libraries/V
 import {VRFConsumerBaseV2Plus} from "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
 import {AutomationCompatibleInterface} from "@chainlink/contracts/src/v0.8/interfaces/AutomationCompatibleInterface.sol";
 import {IRaffle} from "./interfaces/IRaffle.sol";
-
 /**
  * @title A Raffle Contract
  * @author yushaku
@@ -119,7 +118,6 @@ contract Raffle is
                 )
             })
         );
-        // Quiz... is this redundant?
         emit RequestedRaffleWinner(requestId);
     }
 
@@ -129,7 +127,8 @@ contract Raffle is
      */
     function fulfillRandomWords(
         uint256,
-        /* requestId */ uint256[] calldata randomWords
+        /* requestId */
+        uint256[] calldata randomWords
     ) internal override {
         // s_players size 10
         // randomNumber 202

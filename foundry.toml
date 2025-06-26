@@ -10,6 +10,13 @@ remappings = [
   '@foundry-devops=lib/foundry-devops/src/',
   '@solmate=lib/solmate/src/',
 ]
+fs_permissions = [
+    { access = "read", path = "./broadcast" },
+    { access = "read", path = "./reports" },
+]
+# Foundry fuzzing - try to change the inputs of the tests to break the code 256 times
+[fuzz]
+runs = 256
 
 [etherscan]
 mainnet = { key = "${ETHERSCAN_API_KEY}" }

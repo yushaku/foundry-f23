@@ -5,7 +5,7 @@ import {Script} from "forge-std/Script.sol";
 import {Raffle} from "../src/Raffle.sol";
 import {HelperConfig} from "./HelperRaffleConfig.sol";
 import {console} from "forge-std/console.sol";
-import {CreateSubscription} from "./Interactions.s.sol";
+import {ChainLinkScript} from "./Interactions.s.sol";
 
 contract DeployRaffle is Script {
     function run() public {
@@ -16,14 +16,9 @@ contract DeployRaffle is Script {
     function deployContract() public returns (Raffle, HelperConfig) {
         HelperConfig networkConfig = new HelperConfig();
         HelperConfig.NetworkConfig memory config = networkConfig.getConfig();
+        ChainLinkScript chainLink = new ChainLinkScript();
 
-        if (config.subscriptionId == 0) {
-            // deploy subscription
-            CreateSubscription createSubscription = new CreateSubscription();
-            (config.subscriptionId, ) = createSubscription.run();
-        }
-
-        vm.startBroadcast();
+        vm.startBroadcast(config.account);
         Raffle raffle = new Raffle(
             config.subscriptionId,
             config.gasLane,
@@ -33,6 +28,12 @@ contract DeployRaffle is Script {
             config.vrfCoordinator
         );
         vm.stopBroadcast();
+
+        chainLink.addConsumer(
+            address(raffle),
+            config.subscriptionId,
+            config.vrfCoordinator
+        );
 
         return (raffle, networkConfig);
     }
