@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
-interface IRewardDistribution {
+interface IMerkleAirdrop {
     /*****************************************************************************/
     /** @notice errors */
     /*****************************************************************************/
@@ -11,6 +11,7 @@ interface IRewardDistribution {
     error RD__InvalidToken();
     error RD__InvalidMerkleRoot();
     error RD__ZeroAddress();
+    error RD__InvalidSignature();
     error RD__RewardAlreadyClaimed();
 
     /*****************************************************************************/
@@ -40,5 +41,10 @@ interface IRewardDistribution {
     struct Reward {
         address token;
         bytes32 merkleRoot;
+    }
+
+    struct AirdropClaim {
+        address account;
+        uint256 amount;
     }
 }

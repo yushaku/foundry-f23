@@ -6,12 +6,16 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/Multicall.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 
-import {IRewardDistribution} from "./interfaces/IRewardDistribution.sol";
+import {IMerkleAirdrop} from "./interfaces/IMerkleAirdrop.sol";
 
-contract RewardDistribution is IRewardDistribution, Ownable, Multicall {
+contract MerkleAirdrop is IMerkleAirdrop, Ownable, Multicall, EIP712 {
     using SafeERC20 for IERC20;
     address public constant NATIVE_TOKEN = address(0);
+    bytes32 private constant MESSAGE_TYPEHASH =
+        keccak256("AirdropClaim(address account,uint256 amount)");
 
     uint256 private s_epoch;
     mapping(uint256 => mapping(address => bool)) private s_hasClaimed; // epoch => account => claimed
@@ -19,9 +23,7 @@ contract RewardDistribution is IRewardDistribution, Ownable, Multicall {
     mapping(address => bool) private s_tokenWhitelist; // token => whitelisted
     address[] private s_tokens;
 
-    constructor(address _usdc) Ownable(msg.sender) {
-        if (_usdc == address(0)) revert RD__ZeroAddress();
-        s_tokenWhitelist[_usdc] = true;
+    constructor() EIP712("MerkleAirdrop", "1.0.0") Ownable(msg.sender) {
         s_tokenWhitelist[NATIVE_TOKEN] = true;
     }
 
@@ -123,6 +125,57 @@ contract RewardDistribution is IRewardDistribution, Ownable, Multicall {
         emit RD__RewardClaimed(msg.sender, amount);
     }
 
+    // claim the airdrop using a signature from the account owner
+    function claim(
+        uint256 epoch,
+        address account,
+        uint256 amount,
+        bytes32[] calldata merkleProof,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) external {
+        if (s_hasClaimed[epoch][account]) revert RD__RewardAlreadyClaimed();
+
+        if (
+            !_isValidSignature(
+                account,
+                getMessageHash(account, amount),
+                v,
+                r,
+                s
+            )
+        ) revert RD__InvalidSignature();
+
+        bytes32 leaf = keccak256(
+            bytes.concat(keccak256(abi.encode(account, amount)))
+        );
+
+        Reward memory reward = s_epochMerkleRoot[epoch];
+
+        if (!MerkleProof.verify(merkleProof, reward.merkleRoot, leaf))
+            revert RD__InvalidProof();
+
+        s_hasClaimed[epoch][account] = true;
+        _sendToken(account, reward.token, amount);
+        emit RD__RewardClaimed(account, amount);
+    }
+
+    function getMessageHash(
+        address account,
+        uint256 amount
+    ) public view returns (bytes32) {
+        return
+            _hashTypedDataV4(
+                keccak256(
+                    abi.encode(
+                        MESSAGE_TYPEHASH,
+                        AirdropClaim({account: account, amount: amount})
+                    )
+                )
+            );
+    }
+
     function isEligible(
         uint256 epoch,
         address account,
@@ -167,6 +220,17 @@ contract RewardDistribution is IRewardDistribution, Ownable, Multicall {
             IERC20 token = IERC20(_token);
             token.safeTransferFrom(_from, address(this), _amount);
         }
+    }
+
+    function _isValidSignature(
+        address signer,
+        bytes32 digest,
+        uint8 _v,
+        bytes32 _r,
+        bytes32 _s
+    ) internal pure returns (bool) {
+        (address actualSigner, , ) = ECDSA.tryRecover(digest, _v, _r, _s);
+        return (actualSigner == signer);
     }
 
     /*****************************************************************************/
