@@ -3,6 +3,7 @@
     "@chainlink/contracts/=lib/chainlink-brownie-contracts/contracts/",
     "@foundry-devops/=lib/foundry-devops/src/",
     "@solmate/=lib/solmate/src/",
+    "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
     "chainlink-brownie-contracts/=lib/chainlink-brownie-contracts/contracts/src/v0.6/vendor/@arbitrum/nitro-contracts/src/",
     "forge-std/=lib/forge-std/src/",
     "foundry-devops/=lib/foundry-devops/src/",

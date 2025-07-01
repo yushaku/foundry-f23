@@ -9,6 +9,7 @@ remappings = [
   '@chainlink/contracts=lib/chainlink-brownie-contracts/contracts',
   '@foundry-devops=lib/foundry-devops/src/',
   '@solmate=lib/solmate/src/',
+  '@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts',
 ]
 fs_permissions = [
     { access = "read", path = "./broadcast" },
