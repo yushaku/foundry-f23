@@ -13,3 +13,5 @@ docs/
 # Dotenv file
 .env
 .wake/*
+
+node_modules
