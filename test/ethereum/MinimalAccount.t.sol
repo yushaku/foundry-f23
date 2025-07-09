@@ -190,7 +190,6 @@ contract MinimalAccountTest is Test {
 
     // fund
     vm.deal(address(alice), AMOUNT);
-    vm.deal(address(minimalAccount), AMOUNT);
 
     // act
     PackedUserOperation[] memory ops = new PackedUserOperation[](1);

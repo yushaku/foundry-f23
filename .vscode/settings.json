@@ -1,12 +1,25 @@
 {
   "wake.compiler.solc.remappings": [
     "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+    "@openzeppelin/community-contracts/=lib/openzeppelin-community-contracts/contracts/",
     "@account-abstraction/=lib/account-abstraction/contracts/",
+    "@axelar-network/axelar-gmp-sdk-solidity/=lib/openzeppelin-community-contracts/lib/axelar-gmp-sdk-solidity/",
+    "@openzeppelin-contracts-upgradeable/=lib/openzeppelin-community-contracts/lib/@openzeppelin-contracts-upgradeable/",
+    "@openzeppelin-contracts/=lib/openzeppelin-community-contracts/lib/@openzeppelin-contracts/",
+    "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-community-contracts/lib/@openzeppelin-contracts-upgradeable/contracts/",
+    "@zk-email/contracts/=lib/openzeppelin-community-contracts/lib/zk-email-verify/packages/contracts/",
+    "@zk-email/email-tx-builder/=lib/openzeppelin-community-contracts/lib/email-tx-builder/packages/contracts/",
     "account-abstraction/=lib/account-abstraction/contracts/",
+    "axelar-gmp-sdk-solidity/=lib/openzeppelin-community-contracts/lib/axelar-gmp-sdk-solidity/contracts/",
     "ds-test/=lib/openzeppelin-contracts/lib/forge-std/lib/ds-test/src/",
+    "email-tx-builder/=lib/openzeppelin-community-contracts/lib/email-tx-builder/",
     "erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
     "forge-std/=lib/forge-std/src/",
-    "openzeppelin-contracts/=lib/openzeppelin-contracts/"
+    "halmos-cheatcodes/=lib/openzeppelin-community-contracts/lib/@openzeppelin-contracts/lib/halmos-cheatcodes/src/",
+    "openzeppelin-community-contracts/=lib/openzeppelin-community-contracts/contracts/",
+    "openzeppelin-contracts/=lib/openzeppelin-contracts/",
+    "zk-email-verify/=lib/openzeppelin-community-contracts/lib/zk-email-verify/"
   ],
-  "solidity.compileUsingRemoteVersion": "v0.8.24+commit.e11b9ed9"
+  "editor.formatOnSave": true,
+  "solidity.formatter": "forge"
 }

@@ -56,13 +56,13 @@ contract MinimalAccount is IAccount, Ownable {
         PackedUserOperation calldata userOp,
         bytes32 userOpHash,
         uint256 missingAccountFunds
-    ) external view override onlyEntryPoint returns (uint256 validationData) {
+    ) external override onlyEntryPoint returns (uint256 validationData) {
         validationData = _validateSignature(userOp, userOpHash);
         if (validationData != SIG_VALIDATION_SUCCESS) return validationData;
 
         // Placeholder for other validation steps:
         // _validateNonce(userOp.nonce); // Important for replay protection
-        // _payPrefund(missingAccountFunds); // Logic to pay the EntryPoint if needed
+        _payPrefund(missingAccountFunds); // Logic to pay the EntryPoint if needed
 
         // If all checks pass up to this point, including signature.
         // For this lesson, we are only focusing on signature validation for the return.
