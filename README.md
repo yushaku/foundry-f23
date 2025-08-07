@@ -93,25 +93,26 @@ forge inspect FundMe storageLayout
 
 ## contract layout
 
-// version
-// imports
-// errors
-// interfaces, libraries, contracts
-// Type declarations
-// State variables
-// Events
-// Modifiers
-// Functions
+- version
+- imports
+- errors
+- interfaces, libraries, contracts
+- Type declarations
+- State variables
+- Events
+- Modifiers
+- Functions
 
-// Layout of Functions:
-// constructor
-// receive function (if exists)
-// fallback function (if exists)
-// external
-// public
-// internal
-// private
-// view & pure functions
+Layout of Functions:
+
+- constructor
+- receive function (if exists)
+- fallback function (if exists)
+- external
+- public
+- internal
+- private
+- view & pure functions
 
 ## The Checks-Effects-Interactions (CEI) Pattern
 
