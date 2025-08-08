@@ -5,7 +5,8 @@
   "author": "Yushaku",
   "scripts": {
     "compile": "forge build",
-    "test": "forge test"
+    "test": "forge test",
+    "coverage": "forge coverage"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-foundry": "^1.2.0",
