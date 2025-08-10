@@ -11,9 +11,7 @@ optimize = true
 optimizer_runs = 1000
 ffi = false          # allow foundry run sh scripts on the host machine, should be false for all time but for integration which use devops, it's true
 
-libs = [
-    'node_modules',
-]
+libs = ["node_modules", "lib"]
 remappings = [
     # Due to a misconfiguration of solidity-bytes-utils, an outdated version
     # of forge-std is being dragged in

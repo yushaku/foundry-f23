@@ -1,140 +1,138 @@
-## Foundry
+# DeFi Aave V3 (3.3)
 
-Foundry consists of:
+[contributors-shield]: https://img.shields.io/github/contributors/cyfrin/defi-aave-v3.svg?style=for-the-badge
+[contributors-url]: https://github.com/cyfrin/defi-aave-v3/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/cyfrin/defi-aave-v3.svg?style=for-the-badge
+[forks-url]: https://github.com/cyfrin/defi-aave-v3/network/members
+[stars-shield]: https://img.shields.io/github/stars/cyfrin/defi-aave-v3.svg?style=for-the-badge
+[stars-url]: https://github.com/cyfrin/defi-aave-v3/stargazers
+[issues-shield]: https://img.shields.io/github/issues/cyfrin/defi-aave-v3.svg?style=for-the-badge
+[issues-url]: https://github.com/cyfrin/defi-aave-v3/issues
+[license-shield]: https://img.shields.io/github/license/cyfrin/defi-aave-v3.svg?style=for-the-badge
+[license-url]: https://github.com/cyfrin/defi-aave-v3/blob/main/LICENSE
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+<div align="center">
 
-## Documentation
+[![Stargazers][stars-shield]][stars-url] [![Forks][forks-shield]][forks-url] [![Contributors][contributors-shield]][contributors-url] [![Issues][issues-shield]][issues-url] [![GPLv3 License][license-shield]][license-url]
 
-https://book.getfoundry.sh/
+<p align="center">
+    <br />
+    <a href="https://cyfrin.io/">
+        <img src=".github/images/poweredbycyfrinbluehigher.png" width="145" alt=""/></a>
+            <a href="https://updraft.cyfrin.io/courses/aave-v3">
+        <img src=".github/images/coursebadge.png" width="242.3" alt=""/></a>
+    <br />
+</p>
+</div>
 
-## Usage
+This repository houses course resources and [discussions](https://github.com/Cyfrin/defi-aave-v3/discussions) for the course.
 
-```shell
-$ forge build
-$ forge test
-$ forge fmt        # format
-$ forge snapshot   # Gas Snapshots
-```
+Please refer to this for an in-depth explanation of the content:
 
-## install dependency packages
+- [Website](https://updraft.cyfrin.io) - Join Cyfrin Updraft and enjoy 50+ hours of smart contract development courses
+- [Twitter](https://twitter.com/CyfrinUpdraft) - Stay updated with the latest course releases
+- [LinkedIn](https://www.linkedin.com/school/cyfrin-updraft/) - Add Updraft to your learning experiences
+- [Discord](https://discord.gg/cyfrin) - Join a community of 3000+ developers and auditors
+- [Codehawks](https://codehawks.com) - Smart contracts auditing competitions to help secure web3
 
-```sh
-forge install smartcontractkit/chainlink-brownie-contracts@0.6.1
-forge install Cyfrin/foundry-devops
-```
+## Introduction
 
-## store private key in keystore
+- [Course intro](./notes/course-intro.md)
+- [Setup](./notes/course-setup.md)
 
-Encrypting your Keys Using ERC2335
+## Foundation
 
-```sh
-cast wallet import nameOfAccountGoesHere --interactive
+- [UI demo](https://app.aave.com/)
+- [APY and APR](./notes/apr-apy.png)
+- [Market forces](./notes/market-forces.png)
+- [Utilization rate](./notes/utilization-rate.png)
+- [Interest rate model - graph](https://www.desmos.com/calculator/2pfuulkndt)
+- [Reserve](./notes/reserve.md)
+- AToken and debt token
+  - [Supply DAI](https://etherscan.io/tx/0x48237c5e7aaae5d35f36c1d8b66abf4cc5fc8d335dfa395f89b3b1627a2540c8)
+  - [Borrow ETH](https://etherscan.io/tx/0xfe4b17b089b50bf9c2b00561061b4205e72bf9695c63e7fde31d54f299b9392f)
+- Liquidity and borrow index
+- [Scaled balance](./notes/scaled-balance.png)
+- [Liquidity and borrow indexes code](./notes/liquidity-index.md)
 
-# output: `nameOfAccountGoesHere` keystore was saved successfully.
-#          Address: 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
-```
+## Contract Architecture
 
-Ideally, you don't do this in your VS Code.
+- [Contract architecture](./notes/arc.png)
+- Supply
+  - Execution flow
+    - [Supply DAI](https://etherscan.io/tx/0x48237c5e7aaae5d35f36c1d8b66abf4cc5fc8d335dfa395f89b3b1627a2540c8)
+  - Linear interest
+  - [Exercises](./foundry/exercises/supply.md)
+    - [Starter code](./foundry/src/exercises/Supply.sol)
+    - [Solution](./foundry/src/solutions/Supply.sol)
+- Borrow
+  - Execution flow
+    - [Borrow DAI](https://etherscan.io/tx/0x5e4deab9462bec720f883522d306ec306959cb3ae1ec2eaf0d55477eed01b5a4)
+  - [Compound interest](./notes/binomial_expansion.ipynb)
+  - [Reserve factor](./notes/reserve-factor.md)
+  - [LTV](./notes/ltv.png)
+  - [Liquidation threshold](./notes/liquidation-threshold.png)
+  - [Health factor](./notes/health-factor.png)
+  - [Exercises](./foundry/exercises/borrow.md)
+    - [Starter code](./foundry/src/exercises/Borrow.sol)
+    - [Solution](./foundry/src/solutions/Borrow.sol)
+- Repay
+  - Execution flow
+    - [Repay DAI](https://etherscan.io/tx/0x1145e9815060164ef9234bdbc6d88db97ac5dda7b1e30732dc981145604e0373)
+  - [Exercises](./foundry/exercises/repay.md)
+    - [Starter code](./foundry/src/exercises/Repay.sol)
+    - [Solution](./foundry/src/solutions/Repay.sol)
+- Withdraw
+  - Execution flow
+    - [Withdraw DAI](https://etherscan.io/tx/0x4e263e358db180ec478d61542a1126a47bba6d6fc0d5bb2b7b8cf83a8bdb11d3)
+  - [Exercises](./foundry/exercises/withdraw.md)
+    - [Starter code](./foundry/src/exercises/Withdraw.sol)
+    - [Solution](./foundry/src/solutions/Withdraw.sol)
+- Liquidation
+  - [Close factor](./notes/close-factor.png)
+  - [Math](./notes/liquidation.png)
+  - Why my position is not liquidated?
+  - [Exercises](./foundry/exercises/liquidate.md)
+    - [Starter code](./foundry/src/exercises/Liquidate.sol)
+    - [Solution](./foundry/src/solutions/Liquidate.sol)
+- Flash loan simple
+  - [Execution flow](./notes/flash-loan.md)
+  - [Exercises](./foundry/exercises/flash.md)
+    - [Starter code](./foundry/src/exercises/Flash.sol)
+    - [Solution](./foundry/src/solutions/Flash.sol)
 
-You will be asked for your `private key` and a `password` to secure it. You will do this only once, which is amazing!
+## Application
 
-```sh
-forge script script/DeploySimpleStorage.s.sol \
---rpc-url $RPC_URL \
---broadcast \
---account nameOfAccountGoesHere \
---sender 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
-```
+- [Long leverage](./notes/long.png)
+- [Short selling](./notes/short.png)
+- [Flash leverage](https://updraft.cyfrin.io/courses/rocket-pool-reth-integration)
+- [Exercises](./foundry/exercises/long-short.md)
+  - [Starter code](./foundry/src/exercises/LongShort.sol)
+  - [Solution](./foundry/src/solutions/LongShort.sol)
 
-You will be asked for your `password`. You won't be able to deploy without your password.
+## Resources
 
-To see all the configured wallets you can call the following: `cast wallet list`.
+### Aave V3
 
-Clear your history so your private key won't randomly remain there using the following command: `history -c`.
+- [App](https://app.aave.com/)
+- [Docs](https://aave.com/docs)
+- [GitHub aave-v3-origin](https://github.com/aave-dao/aave-v3-origin)
+- [GitHub aave-v3-origin 3.3](https://github.com/aave-dao/aave-v3-origin/tree/v3.3.0)
+- [GitHub aave v3 error codes](https://github.com/aave/aave-v3-core/blob/master/contracts/protocol/libraries/helpers/Errors.sol)
+- [Aave V3 book](https://calnix.gitbook.io/aave-book)
+- [Pool - proxy](https://etherscan.io/address/0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2)
 
-**_Stay safe! Stay froggy! Don't lose your keys. If you are seeing your private key in plain text, you are doing something wrong._**
+### Transactions
 
-## Interacting With Contract Addresses via Command Line
-
-cast
-
-## [Chisel](https://getfoundry.sh/chisel/overview#chisel)
-
-Chisel is a fast, utilitarian, and verbose Solidity REPL.
-
-From here, start writing Solidity code! Chisel will offer verbose feedback on each input.
-
-Create a variable a and query it:
-
-```sh
-➜ uint256 a = 123;
-➜ a
-Type: uint256
-├ Hex: 0x7b
-├ Hex (full word): 0x000000000000000000000000000000000000000000000000000000000000007b
-└ Decimal: 123
-```
-
-## check gas
-
-```sh
-forge snapshot
-```
-
-## check smart contract storage layout
-
-```sh
-forge inspect FundMe storageLayout
-```
-
-## contract layout
-
-- version
-- imports
-- errors
-- interfaces, libraries, contracts
-- Type declarations
-- State variables
-- Events
-- Modifiers
-- Functions
-
-Layout of Functions:
-
-- constructor
-- receive function (if exists)
-- fallback function (if exists)
-- external
-- public
-- internal
-- private
-- view & pure functions
-
-## The Checks-Effects-Interactions (CEI) Pattern
-
-The Checks-Effects-Interactions pattern is a `crucial best practice` in `Solidity` development aimed at `enhancing the security` of smart contracts, especially against **`reentrancy attacks`**.
-
-- **Checks**: `Validate inputs` and `conditions` to ensure the function can execute safely. This includes checking permissions, input validity, and contract state prerequisites.
-
-- **Effects**: Modify the state of `our contract` based on the validated inputs. This phase ensures that all internal state changes occur before any external interactions.
-
-- **Interactions**: Perform external calls to other contracts or accounts. This is the last step to prevent reentrancy attacks, where an external call could potentially call back into the original function before it completes, leading to unexpected behavior.
-
-```solidity
-function coolFunction() public {
-    // Checks
-    checkX();
-    checkY();
-
-    // Effects
-    updateStateM();
-
-    // Interactions
-    sendA();
-    callB();
-}
-```
+- [Supply rETH tx](https://etherscan.io/tx/0xc1120138b3aa3dc6a49ef7e84ecd17530c273e2442f83e47025d819d9a700743)
+- [Supply ETH tx](https://etherscan.io/tx/0x21de14e5c58b9431a70b780893d01f0b82f07a0495d851d97fc0e85c64887610)
+- [Borrow DAI tx](https://etherscan.io/tx/0x5e4deab9462bec720f883522d306ec306959cb3ae1ec2eaf0d55477eed01b5a4)
+- [Repay DAI tx](https://etherscan.io/tx/0x1145e9815060164ef9234bdbc6d88db97ac5dda7b1e30732dc981145604e0373)
+- [Withdraw rETH](https://etherscan.io/tx/0x7442ab56bfe90a189516f44846b93d25aa0dde3bbfba935429ac561ab34bc575)
+- [Withdraw ETH](https://etherscan.io/tx/0x748e56cfaa10b6d629bd06badfdf83b337956e640523bbb1805901e11915c517)
+- [Supply DAI](https://etherscan.io/tx/0x48237c5e7aaae5d35f36c1d8b66abf4cc5fc8d335dfa395f89b3b1627a2540c8)
+- [Withdraw DAI](https://etherscan.io/tx/0x4e263e358db180ec478d61542a1126a47bba6d6fc0d5bb2b7b8cf83a8bdb11d3)
+- [Borrow DAI](https://etherscan.io/tx/0x5e4deab9462bec720f883522d306ec306959cb3ae1ec2eaf0d55477eed01b5a4)
+- [Repay DAI](https://etherscan.io/tx/0x1145e9815060164ef9234bdbc6d88db97ac5dda7b1e30732dc981145604e0373)
+- [Borrow ETH](https://etherscan.io/tx/0xfe4b17b089b50bf9c2b00561061b4205e72bf9695c63e7fde31d54f299b9392f)
