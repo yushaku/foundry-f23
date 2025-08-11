@@ -35,7 +35,8 @@ contract Vault is IVault {
      * @dev This function is used to deposit ETH into the vault.
      */
     function deposit() external payable {
-        i_rebaseToken.mint(msg.sender, msg.value);
+        uint256 interestRate = i_rebaseToken.getInterestRate();
+        i_rebaseToken.mint(msg.sender, msg.value, interestRate);
         emit Deposit(msg.sender, msg.value);
     }
 

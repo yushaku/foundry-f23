@@ -23,7 +23,8 @@ contract RebaseToken is IRebaseToken, ERC20, AccessControl {
         private s_userLastUpdatedTimestamp;
 
     constructor() ERC20("Rebase Token", "RBT") {
-        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        bool success = _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        if (!success) revert RebaseToken__GrantRoleFailed();
     }
 
     /******************************************************************************************/
@@ -39,7 +40,8 @@ contract RebaseToken is IRebaseToken, ERC20, AccessControl {
         bytes32 _role,
         address _account
     ) public override onlyRole(DEFAULT_ADMIN_ROLE) {
-        _grantRole(_role, _account);
+        bool success = _grantRole(_role, _account);
+        if (!success) revert RebaseToken__GrantRoleFailed();
     }
 
     /**
@@ -51,7 +53,8 @@ contract RebaseToken is IRebaseToken, ERC20, AccessControl {
         bytes32 _role,
         address _account
     ) public override onlyRole(DEFAULT_ADMIN_ROLE) {
-        _revokeRole(_role, _account);
+        bool success = _revokeRole(_role, _account);
+        if (!success) revert RebaseToken__RevokeRoleFailed();
     }
 
     /**
@@ -74,10 +77,11 @@ contract RebaseToken is IRebaseToken, ERC20, AccessControl {
      */
     function mint(
         address _to,
-        uint256 _amount
+        uint256 _amount,
+        uint256 _interestRate
     ) external onlyRole(MINT_AND_BURN_ROLE) {
         _mintAccruedInterest(_to);
-        s_userInterestRate[_to] = s_interestRate;
+        s_userInterestRate[_to] = _interestRate;
         _mint(_to, _amount);
     }
 

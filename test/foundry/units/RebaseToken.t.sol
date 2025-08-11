@@ -180,7 +180,7 @@ contract RebaseTokenTest is Test {
         vm.expectPartialRevert(
             IAccessControl.AccessControlUnauthorizedAccount.selector
         );
-        rebaseToken.mint(alice, SEND_VALUE);
+        rebaseToken.mint(alice, SEND_VALUE, rebaseToken.getInterestRate());
         vm.stopPrank();
     }
 

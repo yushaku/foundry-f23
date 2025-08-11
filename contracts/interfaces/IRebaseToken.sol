@@ -2,6 +2,10 @@
 pragma solidity 0.8.28;
 
 interface IRebaseToken {
+    error RebaseToken__GrantRoleFailed();
+
+    error RebaseToken__RevokeRoleFailed();
+
     error RebaseToken__InterestRateCanOnlyDecrease(
         uint256 oldInterestRate,
         uint256 newInterestRate
@@ -20,9 +24,11 @@ interface IRebaseToken {
     //     This prevents a potential attack where someone could send a tiny amount of tokens to another user to forcibly change (and potentially lower) their interest rate.
     // */
     // function transfer(address _to, uint256 _amount) external returns (bool);
-    function mint(address _to, uint256 _amount) external;
+    function mint(address _to, uint256 _amount, uint256 _interestRate) external;
 
     function burn(address _from, uint256 _amount) external;
 
     function getUserInterestRate(address _user) external view returns (uint256);
+
+    function getInterestRate() external view returns (uint256);
 }
