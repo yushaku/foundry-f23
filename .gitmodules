@@ -4,3 +4,6 @@
 [submodule "lib/ccip-cct-starter"]
 	path = lib/ccip-cct-starter
 	url = https://github.com/Cyfrin/ccip-cct-starter
+[submodule "lib/chainlink-local"]
+	path = lib/chainlink-local
+	url = https://github.com/smartcontractkit/chainlink-local

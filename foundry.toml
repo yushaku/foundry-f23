@@ -14,8 +14,11 @@ ffi = false          # allow foundry run sh scripts on the host machine, should 
 libs = ["node_modules", "lib"]
 remappings = [
     'forge-std/=lib/forge-std/src',
-    '@layerzerolabs/=node_modules/@layerzerolabs/',
     '@openzeppelin/=node_modules/@openzeppelin/',
+    '@chainlink/contracts/=node_modules/@chainlink/contracts/',
+    '@chainlink/contracts-ccip/contracts/=node_modules/@chainlink/contracts-ccip/contracts/',
+    '@chainlink/contracts/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/=node_modules/@openzeppelin/contracts/',
+    '@chainlink-local/=lib/chainlink-local/'
 ]
 
 fs_permissions = [
@@ -31,4 +34,6 @@ mainnet = { key = "${ETHERSCAN_API_KEY}" }
 sepolia = {key = "${ETHERSCAN_API_KEY}"}
 
 [rpc_endpoints]
-sepolia = "${SEPOLIA_RPC_URL}"
+sepolia = "https://sepolia.gateway.tenderly.co"
+arb-sepolia = "https://arbitrum-sepolia.gateway.tenderly.co"
+

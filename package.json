@@ -30,5 +30,9 @@
     "ts-node": "^10.9.2",
     "typescript": "~5.0.4",
     "viem": "^2.33.3"
+  },
+  "dependencies": {
+    "@chainlink/contracts": "^1.4.0",
+    "@chainlink/contracts-ccip": "^1.6.0"
   }
 }

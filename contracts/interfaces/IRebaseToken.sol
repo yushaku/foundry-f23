@@ -6,11 +6,6 @@ interface IRebaseToken {
 
     error RebaseToken__RevokeRoleFailed();
 
-    error RebaseToken__InterestRateCanOnlyDecrease(
-        uint256 oldInterestRate,
-        uint256 newInterestRate
-    );
-
     event InterestRateSet(uint256 newInterestRate);
 
     // /**

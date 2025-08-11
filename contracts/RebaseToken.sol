@@ -178,13 +178,6 @@ contract RebaseToken is IRebaseToken, ERC20, AccessControl {
         _mint(_user, interest);
     }
 
-    function _calculateAccruedInterest(
-        address _to
-    ) internal view returns (uint256) {
-        uint256 timeElapsed = block.timestamp - s_userLastUpdatedTimestamp[_to];
-        return (s_userInterestRate[_to] * timeElapsed) / PRECISION_FACTOR;
-    }
-
     /**
      * @dev Calculates the growth factor due to accumulated interest since the user's last update.
      * @param _user The address of the user.
