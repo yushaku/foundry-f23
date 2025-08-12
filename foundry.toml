@@ -6,6 +6,7 @@ src = 'contracts'
 out = 'out'
 test = 'test/foundry'
 cache_path = 'cache/foundry'
+script = 'scripts'
 verbosity = 3
 optimize = true
 optimizer_runs = 1000

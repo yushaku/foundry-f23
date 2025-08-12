@@ -35,7 +35,8 @@ contract CrossChainTest is Test {
     RebaseTokenPool arbPool;
 
     address owner = makeAddr("owner");
-    address user = makeAddr("user");
+    address alice = makeAddr("alice");
+    address bob = makeAddr("bob");
 
     function setUp() public {
         sepoliaFork = vm.createSelectFork("sepolia");
@@ -70,6 +71,7 @@ contract CrossChainTest is Test {
 
         TokenAdminRegistry(sepoliaNetworkDetails.tokenAdminRegistryAddress)
             .setPool(address(sepoliaToken), address(sepoliaPool));
+        vm.stopPrank();
 
         configureTokenPool(
             sepoliaFork, // Local chain: Sepolia
@@ -78,7 +80,6 @@ contract CrossChainTest is Test {
             address(arbPool), // Remote pool address: Arbitrum Sepolia's TokenPool
             address(arbToken) // Remote token address: Arbitrum Sepolia's Token
         );
-        vm.stopPrank();
 
         // 2. Deploy arbitrum
         vm.selectFork(arbSepoliaFork);
@@ -162,13 +163,14 @@ contract CrossChainTest is Test {
     }
 
     function bridgeTokens(
-        uint256 amountToBridge,
         uint256 localFork,
         uint256 remoteFork,
-        Register.NetworkDetails memory localNetworkDetails,
-        Register.NetworkDetails memory remoteNetworkDetails,
+        address user,
         RebaseToken localToken,
-        RebaseToken remoteToken
+        RebaseToken remoteToken,
+        uint256 amountToBridge,
+        Register.NetworkDetails memory localNetworkDetails,
+        Register.NetworkDetails memory remoteNetworkDetails
     ) public {
         vm.selectFork(localFork);
 
@@ -184,7 +186,9 @@ contract CrossChainTest is Test {
             data: "",
             tokenAmounts: tokenAmounts,
             feeToken: localNetworkDetails.linkAddress,
-            extraArgs: Client._argsToBytes(Client.EVMExtraArgsV1({gasLimit: 0}))
+            extraArgs: Client._argsToBytes(
+                Client.EVMExtraArgsV1({gasLimit: 100_000})
+            )
         });
 
         uint256 fee = IRouterClient(localNetworkDetails.routerAddress).getFee(
@@ -233,6 +237,70 @@ contract CrossChainTest is Test {
             remoteBalanceAfter,
             remoteBalanceBefore + amountToBridge,
             "Remote balance incorrect after receive"
+        );
+    }
+    function testBridgeAllTokens() public {
+        uint256 DEPOSIT_AMOUNT = 1e5; // Using a small, fixed amount for clarity
+
+        // 1. Deposit into Vault on Sepolia
+        vm.selectFork(sepoliaFork);
+        vm.deal(alice, DEPOSIT_AMOUNT); // Give user some ETH to deposit
+
+        vm.prank(alice);
+        // To send ETH (msg.value) with a contract call in Foundry:
+        // Cast contract instance to address, then to payable, then back to contract type.
+        Vault(payable(address(sepoliaVault))).deposit{value: DEPOSIT_AMOUNT}();
+
+        assertEq(
+            sepoliaToken.balanceOf(alice),
+            DEPOSIT_AMOUNT,
+            "User Sepolia token balance after deposit incorrect"
+        );
+
+        // 2. Bridge Tokens: Sepolia -> Arbitrum Sepolia
+        bridgeTokens(
+            sepoliaFork,
+            arbSepoliaFork,
+            alice,
+            sepoliaToken,
+            arbToken,
+            DEPOSIT_AMOUNT,
+            sepoliaNetworkDetails,
+            arbSepoliaNetworkDetails
+        );
+
+        // Assertions for this step are within bridgeTokens
+
+        // 3. Bridge All Tokens Back: Arbitrum Sepolia -> Sepolia
+        vm.selectFork(arbSepoliaFork);
+        vm.warp(block.timestamp + 20 minutes); // Advance time on Arbitrum Sepolia before bridging back
+
+        uint256 arbBalanceToBridgeBack = arbToken.balanceOf(alice);
+        assertTrue(
+            arbBalanceToBridgeBack > 0,
+            "User Arbitrum balance should be non-zero before bridging back"
+        );
+
+        bridgeTokens(
+            arbSepoliaFork,
+            sepoliaFork,
+            alice,
+            arbToken,
+            sepoliaToken,
+            arbBalanceToBridgeBack,
+            arbSepoliaNetworkDetails,
+            sepoliaNetworkDetails
+        );
+
+        // Final state check: User on Sepolia should have their initial deposit back
+        // (minus any very small precision differences if applicable to tokenomics, or fees not covered by faucet)
+        vm.selectFork(sepoliaFork);
+        // Note: Exact final balance might depend on tokenomics if any fees were burnt from principal.
+        // For this example, assume full amount returns.
+        assertEq(
+            sepoliaToken.balanceOf(alice),
+            DEPOSIT_AMOUNT,
+            "User Sepolia token balance after bridging back incorrect"
         );
     }
 }

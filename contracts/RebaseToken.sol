@@ -3,6 +3,7 @@ pragma solidity 0.8.28;
 
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IRebaseToken} from "./interfaces/IRebaseToken.sol";
 
 /**
@@ -12,7 +13,7 @@ import {IRebaseToken} from "./interfaces/IRebaseToken.sol";
  * @notice The interest rate in the smart contract can only decrease.
  * @notice Each user will have their own interest rate that is the global interest rate at the time of deposit.
  */
-contract RebaseToken is IRebaseToken, ERC20, AccessControl {
+contract RebaseToken is IRebaseToken, ERC20, AccessControl, Ownable {
     uint256 private constant PRECISION_FACTOR = 1e18;
     bytes32 public constant MINT_AND_BURN_ROLE =
         keccak256("MINT_AND_BURN_ROLE");
@@ -22,7 +23,7 @@ contract RebaseToken is IRebaseToken, ERC20, AccessControl {
     mapping(address user => uint256 timestamp)
         private s_userLastUpdatedTimestamp;
 
-    constructor() ERC20("Rebase Token", "RBT") {
+    constructor() ERC20("Rebase Token", "RBT") Ownable(msg.sender) {
         bool success = _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         if (!success) revert RebaseToken__GrantRoleFailed();
     }

@@ -34,7 +34,7 @@ contract RebaseTokenTest is Test {
         if (!success) revert();
     }
 
-    function test_Vault_Deposit(uint256 amount) public {
+    function testVaultDeposit(uint256 amount) public {
         // Min: 0.00001 ETH (1e5 wei),
         // Max: type(uint96).max to avoid overflows.
         amount = bound(amount, 1e5, type(uint96).max);
